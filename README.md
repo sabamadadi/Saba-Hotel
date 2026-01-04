@@ -90,7 +90,7 @@ hotel-management-system/
 ### 1️⃣ کلون پروژه
 
 ```
-git clone <REPO_URL>
+git clone [<REPO_URL>](https://github.com/sabamadadi/Saba-Hotel.git)
 cd hotel-management-system
 ```
 
