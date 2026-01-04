@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}افزودن اتاق{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-1">افزودن اتاق</h3>
+    <div class="text-muted">ثبت اتاق جدید</div>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('rooms') }}">
+    <i class="bi bi-arrow-right ms-1"></i> بازگشت
+  </a>
+</div>
+
+<div class="card app-card">
+  <div class="card-body">
+    <form method="POST" class="row g-3">
+
+      <!-- کد اتاق -->
+      <div class="col-12 col-md-3">
+        <label class="form-label">کد اتاق</label>
+        <input name="room_id" type="number" class="form-control" required>
+      </div>
+
+      <!-- نوع اتاق -->
+      <div class="col-12 col-md-3">
+        <label class="form-label">نوع اتاق</label>
+        <select name="type" class="form-select" required>
+          <option value="" disabled selected>انتخاب کنید</option>
+          <option value="single">سینگل</option>
+          <option value="double">دبل</option>
+          <option value="twin">توئین</option>
+          <option value="suite">سوئیت</option>
+          <option value="family">خانوادگی</option>
+          <option value="vip">VIP</option>
+        </select>
+      </div>
+
+      <!-- ظرفیت -->
+      <div class="col-12 col-md-3">
+        <label class="form-label">ظرفیت (نفر)</label>
+        <select name="capacity" class="form-select" required>
+          <option value="" disabled selected>انتخاب کنید</option>
+          <option value="1">۱ نفر</option>
+          <option value="2">۲ نفر</option>
+          <option value="3">۳ نفر</option>
+          <option value="4">۴ نفر</option>
+          <option value="5">۵ نفر</option>
+          <option value="6">۶ نفر</option>
+        </select>
+      </div>
+
+      <!-- طبقه -->
+      <div class="col-12 col-md-3">
+        <label class="form-label">طبقه</label>
+        <select name="floor" class="form-select" required>
+          <option value="" disabled selected>انتخاب کنید</option>
+          <option value="0">همکف</option>
+          <option value="1">طبقه ۱</option>
+          <option value="2">طبقه ۲</option>
+          <option value="3">طبقه ۳</option>
+          <option value="4">طبقه ۴</option>
+          <option value="5">طبقه ۵</option>
+        </select>
+      </div>
+
+      <!-- نوع تخت -->
+      <div class="col-12 col-md-4">
+        <label class="form-label">نوع تخت</label>
+        <select name="bed_type" class="form-select" required>
+          <option value="" disabled selected>انتخاب کنید</option>
+          <option value="single">تک‌نفره</option>
+          <option value="double">دونفره</option>
+          <option value="twin">دو تخت جدا</option>
+          <option value="queen">Queen</option>
+          <option value="king">King</option>
+        </select>
+      </div>
+
+      <!-- قیمت -->
+      <div class="col-12 col-md-4">
+        <label class="form-label">قیمت (هر شب)</label>
+        <input name="price" type="number" step="0.01" min="0" class="form-control" required>
+      </div>
+
+      <!-- سیگار -->
+      <div class="col-12 col-md-4">
+        <label class="form-label">سیگار</label>
+        <select name="smoking" class="form-select">
+          <option value="false" selected>غیرسیگاری</option>
+          <option value="true">سیگاری</option>
+        </select>
+      </div>
+
+      <!-- امکانات -->
+      <div class="col-12">
+        <label class="form-label">امکانات (اختیاری)</label>
+        <input name="features" class="form-control"
+               placeholder="WiFi, TV, AC, MiniBar, ...">
+      </div>
+
+      <!-- وضعیت -->
+      <div class="col-12 col-md-6">
+        <label class="form-label">وضعیت</label>
+        <select name="status" class="form-select">
+          <option value="available" selected>آزاد</option>
+          <option value="reserved">رزرو شده</option>
+          <option value="occupied">اشغال</option>
+          <option value="cleaning">در حال نظافت</option>
+        </select>
+      </div>
+
+      <!-- دکمه‌ها -->
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-success">
+          <i class="bi bi-check2-circle ms-1"></i> ذخیره اتاق
+        </button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('rooms') }}">انصراف</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

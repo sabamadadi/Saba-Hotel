@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}رزروها{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-1">رزروها</h3>
+    <div class="text-muted">رزروهای فعال</div>
+  </div>
+  <a class="btn btn-warning" href="{{ url_for('add_reservation') }}">
+    <i class="bi bi-plus-circle ms-1"></i> ثبت رزرو
+  </a>
+</div>
+
+<div class="card app-card">
+  <div class="card-body">
+    <div class="row g-2 mb-3">
+      <div class="col-12 col-md-6">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input class="form-control" id="tableSearch" placeholder="جستجو در رزروها...">
+        </div>
+      </div>
+    </div>
+
+    {% if reservations %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" id="dataTable">
+        <thead class="table-light">
+          <tr>
+            <th>کد</th>
+            <th>مهمان</th>
+            <th>کارمند</th>
+            <th>ورود</th>
+            <th>خروج</th>
+            <th>نفرات</th>
+            <th>مبلغ</th>
+            <th class="text-end">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in reservations %}
+          <tr>
+            <td class="persian-digits fw-semibold">{{ r.res_id }}</td>
+            <td>{{ r.name }} {{ r.family }}</td>
+            <td class="text-muted">{{ r.username }}</td>
+            <td><span class="persian-date" data-date="{{ r.check_in }}"></span></td>
+            <td><span class="persian-date" data-date="{{ r.check_out }}"></span></td>
+            <td class="persian-digits">{{ r.num_people }}</td>
+            <td class="persian-digits">{{ r.total_cost }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-danger confirm-action"
+                 data-confirm="رزرو لغو شود؟"
+                 href="{{ url_for('cancel_reservation', res_id=r.res_id) }}">
+                <i class="bi bi-x-circle"></i>
+              </a>
+              <a class="btn btn-sm btn-outline-success confirm-action ms-1"
+                 data-confirm="رزرو پایان یابد؟"
+                 href="{{ url_for('finish_reservation', res_id=r.res_id) }}">
+                <i class="bi bi-check2-circle"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-journal-check"></i></div>
+        <div class="fw-bold">رزرو فعالی وجود ندارد</div>
+        <div class="text-muted">می‌تونی رزرو جدید ثبت کنی.</div>
+        <a class="btn btn-warning mt-2" href="{{ url_for('add_reservation') }}">ثبت رزرو</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

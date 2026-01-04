@@ -1,0 +1,236 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+
+  --primary: #2563eb;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+}
+
+* {
+  font-family: "Vazirmatn", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+body {
+  background:
+    linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)),
+    url("/static/img/bg.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+
+/* Navbar */
+.app-navbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-brand,
+.navbar .nav-link {
+  color: var(--text) !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link.active {
+  color: var(--primary) !important;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cards */
+.app-card,
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* Forms */
+.form-control,
+.form-select,
+.input-group-text {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+}
+
+/* Tables */
+.table {
+  color: var(--text);
+}
+
+.table thead th {
+  background: #f9fafb;
+  border-bottom: 1px solid var(--border);
+}
+
+.table td,
+.table th {
+  border-color: var(--border);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-success {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.btn-warning {
+  background: var(--warning);
+  border-color: var(--warning);
+}
+
+.btn-danger {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Stats */
+.stat-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* آیکن رنگی و واضح */
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+}
+
+
+.stat-primary .stat-icon {
+  background: #3b82f6; /* آبی */
+}
+
+.stat-success .stat-icon {
+  background: #22c55e; /* سبز */
+}
+
+.stat-warning .stat-icon {
+  background: #f59e0b; /* زرد */
+}
+
+.stat-danger .stat-icon {
+  background: #ef4444; /* قرمز */
+}
+
+
+.stat-body .stat-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-body .stat-value {
+  font-size: 26px;
+  font-weight: 800;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  background: #eef2ff;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 12px;
+}
+
+/* Avatar */
+.avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  background: #eef2ff;
+  color: var(--primary);
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer */
+.app-footer {
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+  margin-top: 40px;
+}
+
+/* Helpers */
+.persian-digits {
+  font-feature-settings: "ss01";
+}
+.tg-fab{
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #229ED9;
+  color: #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 26px;
+  text-decoration:none;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  z-index: 9999;
+}
+.tg-fab:hover{ color:#fff; transform: translateY(-2px); }
+

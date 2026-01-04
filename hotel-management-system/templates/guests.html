@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}مهمان‌ها{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-1">مهمان‌ها</h3>
+    <div class="text-muted">مدیریت اطلاعات مهمان‌ها</div>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary" href="{{ url_for('add_guest') }}">
+      <i class="bi bi-person-plus ms-1"></i> افزودن مهمان
+    </a>
+  </div>
+</div>
+
+<div class="card app-card">
+  <div class="card-body">
+    <div class="row g-2 mb-3">
+      <div class="col-12 col-md-6">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input class="form-control" id="tableSearch" placeholder="جستجو در لیست مهمان‌ها...">
+        </div>
+      </div>
+      <div class="col-12 col-md-6 text-md-end text-muted small">
+        مجموع: <span class="persian-digits">{{ guests|length }}</span> مهمان
+      </div>
+    </div>
+
+    {% if guests %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle" id="dataTable">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>نام</th>
+            <th>ایمیل</th>
+            <th>شناسه</th>
+            <th>تولد</th>
+            <th class="text-end">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for g in guests %}
+          <tr>
+            <td class="persian-digits">{{ g.guest_id }}</td>
+            <td class="fw-semibold">{{ g.name }} {{ g.family }}</td>
+            <td>
+              {% if g.email %}
+                <a class="link-underline link-underline-opacity-0" href="mailto:{{ g.email }}">{{ g.email }}</a>
+              {% else %}—{% endif %}
+            </td>
+            <td class="small text-muted">
+              {% if g.national_id %}ملی: {{ g.national_id }}{% endif %}
+              {% if g.passport %}<br>پاسپورت: {{ g.passport }}{% endif %}
+            </td>
+            <td><span class="persian-date" data-date="{{ g.birthdate }}"></span></td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-danger confirm-delete"
+                 href="{{ url_for('delete_guest', guest_id=g.guest_id) }}">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-people"></i></div>
+        <div class="fw-bold">هیچ مهمانی ثبت نشده</div>
+        <div class="text-muted">اولین مهمان را اضافه کن.</div>
+        <a class="btn btn-primary mt-2" href="{{ url_for('add_guest') }}">افزودن مهمان</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

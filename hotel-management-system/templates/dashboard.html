@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}داشبورد{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-1">داشبورد</h3>
+    <div class="text-muted">نمای کلی وضعیت هتل</div>
+  </div>
+  <div class="text-muted small">
+    <i class="bi bi-calendar3 ms-1"></i>
+    <span class="persian-date" data-date="{{ now.strftime('%Y-%m-%d') }}"></span>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="stat-card stat-primary">
+      <div class="stat-icon"><i class="bi bi-people"></i></div>
+      <div class="stat-body">
+        <div class="stat-label">کل مهمان‌ها</div>
+        <div class="stat-value persian-digits">{{ stats.total_guests }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="stat-card stat-success">
+      <div class="stat-icon"><i class="bi bi-door-closed"></i></div>
+      <div class="stat-body">
+        <div class="stat-label">کل اتاق‌ها</div>
+        <div class="stat-value persian-digits">{{ stats.total_rooms }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="stat-card stat-warning">
+      <div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
+      <div class="stat-body">
+        <div class="stat-label">اتاق‌های خالی</div>
+        <div class="stat-value persian-digits">{{ stats.available_rooms }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="stat-card stat-danger">
+      <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
+      <div class="stat-body">
+        <div class="stat-label">رزروهای فعال</div>
+        <div class="stat-value persian-digits">{{ stats.active_reservations }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card app-card">
+      <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+        <div class="fw-bold"><i class="bi bi-lightning-charge ms-1"></i> عملیات سریع</div>
+      </div>
+      <div class="card-body pt-0">
+        <div class="row g-2">
+          <div class="col-12 col-md-4">
+            <a class="btn btn-outline-primary w-100 py-3" href="{{ url_for('add_guest') }}">
+              <i class="bi bi-person-plus d-block fs-3 mb-1"></i>
+              افزودن مهمان
+            </a>
+          </div>
+          <div class="col-12 col-md-4">
+            <a class="btn btn-outline-success w-100 py-3" href="{{ url_for('add_room') }}">
+              <i class="bi bi-door-open d-block fs-3 mb-1"></i>
+              افزودن اتاق
+            </a>
+          </div>
+          <div class="col-12 col-md-4">
+            <a class="btn btn-outline-warning w-100 py-3" href="{{ url_for('add_reservation') }}">
+              <i class="bi bi-plus-circle d-block fs-3 mb-1"></i>
+              ثبت رزرو
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="card app-card">
+      <div class="card-header bg-transparent border-0 fw-bold">
+        <i class="bi bi-activity ms-1"></i> آخرین فعالیت‌ها
+      </div>
+      <div class="card-body pt-0">
+        {% if recent_activities %}
+          <div class="list-group list-group-flush">
+            {% for a in recent_activities %}
+            <div class="list-group-item bg-transparent px-0">
+              <div class="d-flex justify-content-between">
+                <div class="fw-semibold">{{ a.title }}</div>
+                <div class="text-muted small">{{ a.time }}</div>
+              </div>
+              <div class="text-muted small">{{ a.description }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-muted">فعلاً فعالیتی ثبت نشده.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ بخش جدید: اتاق‌های در حال نظافت -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card app-card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <h5 class="fw-bold mb-0">
+              <i class="bi bi-bucket ms-1 text-warning"></i>
+              اتاق‌های در حال نظافت
+            </h5>
+            <div class="text-muted small">لیست اتاق‌هایی که وضعیت‌شان cleaning است</div>
+          </div>
+          <span class="badge text-bg-warning">
+            {{ cleaning_rooms|length if cleaning_rooms else 0 }}
+          </span>
+        </div>
+
+        {% if cleaning_rooms and cleaning_rooms|length > 0 %}
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>اتاق</th>
+                  <th>نوع</th>
+                  <th>طبقه</th>
+                  <th>ظرفیت</th>
+                  <th>نوع تخت</th>
+                  <th class="text-start">قیمت</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in cleaning_rooms %}
+                <tr>
+                  <td class="fw-bold">#{{ r.room_id }}</td>
+                  <td>{{ r.type }}</td>
+                  <td>{{ r.floor }}</td>
+                  <td>{{ r.capacity }}</td>
+                  <td>{{ r.bed_type }}</td>
+                  <td class="text-start">{{ "{:,.0f}".format(r.price|float) }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-check2-circle"></i></div>
+            <div class="fw-bold">فعلاً اتاقی در حال نظافت نیست</div>
+            <div class="text-muted small">همه اتاق‌ها وضعیت دیگری دارند.</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

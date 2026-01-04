@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}ثبت رزرو{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="fw-bold mb-1">ثبت رزرو</h3>
+    <div class="text-muted">انتخاب مهمان + اتاق + تاریخ</div>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('reservations') }}">
+    <i class="bi bi-arrow-right ms-1"></i> بازگشت
+  </a>
+</div>
+
+<div class="card app-card">
+  <div class="card-body">
+    <form method="POST" class="row g-3">
+      <div class="col-12 col-md-6">
+        <label class="form-label">مهمان</label>
+        <select name="guest_id" class="form-select" required>
+          <option value="" disabled selected>انتخاب کنید...</option>
+          {% for g in guests %}
+            <option value="{{ g.guest_id }}">{{ g.name }} {{ g.family }} ({{ g.guest_id }})</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">تاریخ ورود</label>
+        <input name="check_in" type="date" class="form-control" required>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">تاریخ خروج</label>
+        <input name="check_out" type="date" class="form-control" required>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">تعداد نفرات</label>
+        <input name="num_people" type="number" class="form-control" value="1" min="1" required>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">مبلغ کل</label>
+        <input name="total_cost" type="number" step="0.01" class="form-control" value="0" min="0" required>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">پرداخت</label>
+        <input name="payment" type="number" step="0.01" class="form-control" value="0" min="0">
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label">تخفیف</label>
+        <input name="discount" type="number" step="0.01" class="form-control" value="0" min="0">
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">وضعیت</label>
+        <select name="status" class="form-select">
+          <option value="active" selected>active</option>
+          <option value="canceled">canceled</option>
+          <option value="finished">finished</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">اتاق‌ها (حداقل یکی)</label>
+        <div class="row g-2">
+          {% for r in rooms %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <label class="room-pick">
+                <input class="form-check-input me-2" type="checkbox" name="room_ids" value="{{ r.room_id }}">
+                <span class="fw-semibold">اتاق {{ r.room_id }}</span>
+                <span class="text-muted small d-block">
+                  {{ r.type }} | ظرفیت: {{ r.capacity }} | قیمت: {{ r.price }}
+                </span>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="form-text">این لیست از اتاق‌های available می‌آید.</div>
+      </div>
+
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-warning">
+          <i class="bi bi-check2-circle ms-1"></i> ثبت رزرو
+        </button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('reservations') }}">انصراف</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
