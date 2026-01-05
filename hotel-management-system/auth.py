@@ -1,4 +1,3 @@
-# auth.py (Hotel Management System)
 from flask_login import LoginManager, UserMixin
 from flask import redirect, url_for, flash
 from database import db
@@ -82,8 +81,6 @@ class EmployeeUser(UserMixin):
             print(f"Error authenticating employee: {e}")
             return None
 
-
-# ایجاد مدیریت لاگین
 login_manager = LoginManager()
 
 
@@ -97,4 +94,5 @@ def load_user(user_id):
 def unauthorized():
     """Handle unauthorized access."""
     flash("لطفاً برای دسترسی به این صفحه وارد سیستم شوید.", "warning")
+
     return redirect(url_for("login"))
