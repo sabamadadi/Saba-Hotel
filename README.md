@@ -1,17 +1,27 @@
-
 # 🏨 Saba Hotel
+### Hotel Management System (Flask + PostgreSQL)
 
-## سیستم مدیریت هتل (Flask + PostgreSQL/Neon)
+<p align="center">
+  <img src="demo.gif" alt="Application Demo" width="800">
+</p>
 
-به **Saba Hotel** خوش اومدی 👋
-این پروژه یک **سیستم مدیریت هتل** مدرن و ساده است که با **Flask** پیاده‌سازی شده و از **PostgreSQL (Neon)** استفاده می‌کند.
-در کنار پنل وب، یک **بات تلگرام** هم برای مشاهده وضعیت سریع هتل طراحی شده است 📲✨
+<p align="center">
+  A modern hotel management system with a web dashboard and Telegram bot integration.
+</p>
 
+## 📌 Overview
+
+**Saba Hotel** is a modern and lightweight **Hotel Management System** developed as an academic project.  
+The system is built using **Flask** and **PostgreSQL (Neon)** and provides a clean web interface for hotel staff, along with a **Telegram bot** for quick access to hotel status.
+
+The project focuses on **proper database design**, **normalization**, and **real-world business rules**, making it suitable for both academic evaluation and practical extension.
+
+## 🗂️ Database Design
 
 ### Entity–Relationship (ER) Diagram
 
 <p align="center">
-  Conceptual ER diagram of the database schema, created using 
+  Conceptual ER diagram of the database schema, created using
   <a href="https://dbdiagram.io" target="_blank">dbdiagram.io</a>.
 </p>
 
@@ -19,125 +29,128 @@
   <img src="ER_Diagram.png" alt="ER Diagram" width="700">
 </p>
 
+The database schema is normalized to **Third Normal Form (3NF)** and supports:
+- Multiple phone numbers and addresses per guest
+- Many-to-many relationships between employees and guests
+- Group reservations with multiple rooms
+- Reservation history tracking
 
----
-
-## ✨ امکانات پروژه
-
-### 🌐 پنل وب (Flask)
-
-* 🔐 لاگین امن کارمندان (Employee)
-* 📊 داشبورد مدیریتی
-
-  * تعداد کل اتاق‌ها
-  * اتاق‌های خالی (available)
-  * رزروهای فعال (active)
-  * نمایش اتاق‌های در حال نظافت (cleaning 🧹)
-* 🧑‍🤝‍🧑 مدیریت مهمان‌ها (Guest)
-* 🚪 مدیریت اتاق‌ها (Room)
-* 🧾 مدیریت رزروها (Reservation)
-* 🧠 وضعیت‌های استاندارد اتاق:
-
-  * ✅ `available` — خالی و آماده
-  * 🟡 `reserved` — رزرو شده (مهمان هنوز نیامده)
-  * 🔴 `occupied` — اشغال (مهمان داخل اتاق)
-  * 🧹 `cleaning` — در حال نظافت
-
----
-
-### 🤖 بات تلگرام
-
-بات تلگرام برای دسترسی سریع مدیر یا کارمند به وضعیت هتل:
-
-* 📊 وضعیت سریع هتل
-* 🧹 لیست اتاق‌های cleaning
-* 🧾 لیست رزروهای active
-* 🚪 لیست اتاق‌های available
-* 🔗 لینک داشبورد
-* آدرس بات: **@sabahotel_bot**
-
----
-
-## 🧱 تکنولوژی‌ها
-
-* 🐍 Python 3.10+
-* 🌶 Flask
-* 🐘 PostgreSQL (Neon / Local)
-* 🔐 Flask-Login
-* 🎨 Bootstrap 5 (RTL) + Bootstrap Icons
-* 🤖 pyTelegramBotAPI (telebot)
-* ⚙️ Gunicorn (Production)
-
----
-
-## 📂 ساختار پروژه
-
-```
-hotel-management-system/
-├─ app.py
-├─ auth.py
-├─ database.py
-├─ wsgi.py
-├─ bot_app.py        # منطق اصلی بات تلگرام
-├─ test_bot.py       # فایل اجرای بات
-├─ requirements.txt
-├─ .env
-├─ static/
-│  ├─ css/style.css
-│  ├─ js/app.js
-│  └─ img/bg.jpg
-└─ templates/
-   ├─ base.html
-   ├─ login.html
-   ├─ dashboard.html
-   ├─ profile.html
-   ├─ guests.html
-   ├─ rooms.html
-   ├─ reservations.html
+The database schema file is available in:
 ```
 
----
-
-## ⚙️ نصب و راه‌اندازی (Local)
-
-### 1️⃣ کلون پروژه
+database/hotel_db.sql
 
 ```
+
+## ✨ Features
+
+### 🌐 Web Application
+- 🔐 Secure employee authentication
+- 📊 Management dashboard with real-time statistics
+- 🧑 Guest management (profiles, phones, addresses)
+- 🚪 Room management (status, capacity, pricing)
+- 🧾 Reservation management (single & group bookings)
+- 🧠 Room status workflow:
+  - `available`
+  - `reserved`
+  - `occupied`
+  - `cleaning`
+
+### 🤖 Telegram Bot
+- 📊 Quick hotel status overview
+- 🧹 List of rooms under cleaning
+- 🧾 Active reservations
+- 🚪 Available rooms
+- 🔗 Direct link to the web dashboard
+
+Bot username: **@sabahotel_bot**
+
+## 🧱 Tech Stack
+
+- **Backend:** Python 3.10+, Flask
+- **Database:** PostgreSQL (Neon / Local)
+- **Authentication:** Flask-Login
+- **Frontend:** Bootstrap 5 (RTL) + Bootstrap Icons
+- **Bot:** pyTelegramBotAPI (Telebot)
+- **Production:** Gunicorn
+
+
+## 📂 Project Structure
+
+```
+
+Saba-Hotel/
+├─ database/
+│  ├─ hotel_db.sql
+│  └─ hotel_db.dbn
+├─ hotel-management-system/
+│  ├─ app.py
+│  ├─ auth.py
+│  ├─ database.py
+│  ├─ bot_app.py
+│  ├─ test_bot.py
+│  ├─ wsgi.py
+│  ├─ requirements.txt
+│  ├─ static/
+│  │  ├─ css/style.css
+│  │  ├─ js/app.js
+│  │  └─ img/bg.png
+│  └─ templates/
+│     ├─ base.html
+│     ├─ login.html
+│     ├─ dashboard.html
+│     ├─ profile.html
+│     ├─ guests.html
+│     ├─ rooms.html
+│     ├─ reservations.html
+├─ ER_Diagram.png
+├─ demo.gif
+├─ README.md
+└─ LICENSE
+
+````
+
+## ⚙️ Local Setup
+
+### 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/sabamadadi/Saba-Hotel.git
 cd hotel-management-system
-```
+````
 
-### 2️⃣ ساخت محیط مجازی
+### 2️⃣ Create Virtual Environment
 
-```
+```bash
 python -m venv venv
 ```
 
-ویندوز:
+Activate:
 
-```
+* **Windows**
+
+```bash
 venv\Scripts\activate
 ```
 
-لینوکس / مک:
+* **Linux / macOS**
 
-```
+```bash
 source venv/bin/activate
 ```
 
-### 3️⃣ نصب وابستگی‌ها
+### 3️⃣ Install Dependencies
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🔑 تنظیم فایل `.env`
+## 🔑 Environment Variables
 
-یک فایل `.env` کنار `app.py` بساز:
+Create a `.env` file next to `app.py`:
 
-```
+```env
 SECRET_KEY=your-secret-key
 
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DBNAME?sslmode=require
@@ -146,96 +159,57 @@ DB_URI=postgresql://USER:PASSWORD@HOST:PORT/DBNAME?sslmode=require
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin123
 
-BOT_TOKEN=123456:ABCDEF
-
-DASHBOARD_URL=https://YOUR_APP.leapcell.dev
+BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
+DASHBOARD_URL=https://your-app-url
 ```
 
-📌 نکته:
+## ▶️ Running the Project
 
-* `DATABASE_URL` → وب‌اپ Flask
-* `DB_URI` → بات تلگرام (می‌تواند همان DATABASE_URL باشد)
+### Web Application
 
----
-
-## ▶️ اجرای پروژه
-
-### اجرای وب‌اپ
-
-```
+```bash
 python app.py
 ```
 
-آدرس:
+Open:
 
 ```
 http://localhost:5000
 ```
 
-### اجرای بات تلگرام
+### Telegram Bot
 
-```
+```bash
 python test_bot.py
 ```
 
----
+## 🚀 Deployment
 
-## 🚀 Deploy روی Leapcell
+* **Database:** Neon
+* **Application:** Leapcell
+* **Production Server:**
 
-* دیتابیس روی **Neon**
-* وب‌اپ روی **Leapcell**
-
-برای production:
-
-```
+```bash
 gunicorn --bind 0.0.0.0:5000 wsgi:app
 ```
 
-متغیرهای `.env` را در **Environment Variables** تنظیم کن.
+## 🛡️ Security Notes
 
----
+* Store sensitive credentials only in `.env`
+* Never commit real passwords or tokens
+* Hash passwords in production
+* Use HTTPS in production environments
 
-## 🧪 تست سریع دیتابیس
 
-اتاق در حال نظافت:
+## 🧩 Future Improvements
 
-```
-UPDATE room SET status='cleaning' WHERE room_id=101;
-```
+* Check-in / Check-out workflow
+* Automatic room status updates
+* Payment history tracking
+* Revenue reports
+* Advanced role-based access control
+* Telegram notifications for room cleaning
 
-اتاق خالی:
+## 📜 License
 
-```
-UPDATE room SET status='available' WHERE room_id=101;
-```
-
----
-
-## 🛡️ نکات امنیتی
-
-* 🔑 SECRET_KEY قوی انتخاب کن
-* ❌ BOT_TOKEN را commit نکن
-* 🔒 اطلاعات حساس فقط در `.env`
-* 🌐 برای production از SSL استفاده کن
-
----
-
-## 🧩 ایده‌های توسعه آینده 🚀
-
-* دکمه Check-in / Check-out
-* تغییر خودکار status بر اساس تاریخ
-* نوتیف تلگرام هنگام cleaning
-* گزارش درآمد و پرداخت‌ها
-* سطوح دسترسی پیشرفته کارمندان
-
----
-
-## 📜 لایسنس
-
-MIT
-
----
-
-ساخته شده با ❤️ برای **Saba Hotel**
-
----
+MIT License
