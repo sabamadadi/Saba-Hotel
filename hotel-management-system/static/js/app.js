@@ -1,14 +1,10 @@
-// Persian digits helper
 const toPersianDigits = (s) =>
   String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
 
-// Format date to Persian (fa-IR)
 function formatPersianDate(isoDate) {
   if (!isoDate) return "";
-  // accept "YYYY-MM-DD" or timestamp
   const d = new Date(isoDate);
   if (isNaN(d.getTime())) {
-    // try to handle YYYY-MM-DD
     const parts = String(isoDate).split("-");
     if (parts.length === 3) {
       const d2 = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
@@ -20,18 +16,15 @@ function formatPersianDate(isoDate) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // apply Persian date elements
   document.querySelectorAll(".persian-date").forEach(el => {
     const v = el.getAttribute("data-date");
     el.textContent = formatPersianDate(v);
   });
 
-  // persian digits elements
   document.querySelectorAll(".persian-digits").forEach(el => {
     el.textContent = toPersianDigits(el.textContent);
   });
 
-  // simple table search
   const q = document.getElementById("tableSearch");
   const table = document.getElementById("dataTable");
   if (q && table) {
@@ -43,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // confirm delete/action
   document.querySelectorAll(".confirm-delete").forEach(a => {
     a.addEventListener("click", (e) => {
       if (!confirm("مطمئنی حذف شود؟")) e.preventDefault();
