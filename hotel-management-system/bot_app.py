@@ -1,10 +1,8 @@
 import os
 from functools import wraps
-
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extras import RealDictCursor
-
 import telebot
 from telebot import types
 from dotenv import load_dotenv
@@ -32,10 +30,6 @@ bot = telebot.TeleBot(BOT_TOKEN, parse_mode=None)
 user_sessions = {}
 _temp = {} =
 
-
-# ------------------------
-# DB
-# ------------------------
 def get_db_connection():
     try:
         return psycopg2.connect(DB_URI, cursor_factory=RealDictCursor)
@@ -43,13 +37,8 @@ def get_db_connection():
         print(f"DB connection error: {e}")
         return None
 
-
-# ------------------------
-# Auth helpers
-# ------------------------
 def check_login(chat_id: int) -> bool:
     return bool(user_sessions.get(chat_id, False))
-
 
 def login_required(func):
     @wraps(func)
@@ -62,10 +51,6 @@ def login_required(func):
 
     return wrapper
 
-
-# ------------------------
-# Menus
-# ------------------------
 def login_menu():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     markup.add(types.KeyboardButton("ورود به سیستم"))
@@ -85,10 +70,6 @@ def main_menu():
     markup.add(types.KeyboardButton("خروج از سیستم"))
     return markup
 
-
-# ------------------------
-# Queries (Hotel)
-# ------------------------
 def db_get_stats():
     """
     stats:
@@ -216,10 +197,6 @@ def db_get_active_reservations(limit=10):
     finally:
         conn.close()
 
-
-# ------------------------
-# Bot: start/login/logout
-# ------------------------
 @bot.message_handler(commands=["start", "login"])
 def start_command(message):
     chat_id = message.chat.id
@@ -233,7 +210,6 @@ def start_command(message):
         reply_markup=login_menu(),
         parse_mode="Markdown",
     )
-
 
 @bot.message_handler(func=lambda m: m.text == "ورود به سیستم")
 def ask_for_username(message):
@@ -255,7 +231,6 @@ def process_password(message):
     password = (message.text or "").strip()
     username = _temp.get(chat_id, {}).get("username", "")
 
-    # لاگین ساده
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         user_sessions[chat_id] = True
         _temp.pop(chat_id, None)
@@ -284,10 +259,6 @@ def send_welcome(message):
         reply_markup=main_menu(),
     )
 
-
-# ------------------------
-# Bot: actions
-# ------------------------
 @bot.message_handler(func=lambda m: m.text == "📊 وضعیت سریع")
 @login_required
 def quick_status(message):
@@ -385,3 +356,4 @@ def run_bot():
 
 if __name__ == "__main__":
     run_bot()
+
