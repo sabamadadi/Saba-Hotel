@@ -30,9 +30,6 @@ class Database:
             print(f"Error connecting to database: {e}")
             raise
 
-    # ---------------------------
-    # Password hashing (PBKDF2)
-    # ---------------------------
     def _hash_password(self, password: str) -> str:
         """Hash password with PBKDF2-HMAC-SHA512. Output format: salt(64hex) + hash(hex)."""
         salt = hashlib.sha256(os.urandom(60)).hexdigest().encode("ascii")  # 64 hex chars
@@ -49,12 +46,9 @@ class Database:
         """
         if not stored_password:
             return False
-
-        # Detect our hashed format (salt length 64, hex)
         if len(stored_password) >= 64:
             salt = stored_password[:64]
             rest = stored_password[64:]
-            # if rest is hex-ish then assume hashed format
             if all(c in "0123456789abcdef" for c in (salt + rest).lower()):
                 try:
                     pwdhash = hashlib.pbkdf2_hmac(
@@ -66,14 +60,10 @@ class Database:
                     pwdhash = binascii.hexlify(pwdhash).decode("ascii")
                     return pwdhash == rest
                 except Exception:
-                    # fallback to plain if anything odd
                     return stored_password == provided_password
 
         return stored_password == provided_password
 
-    # ---------------------------
-    # Generic execution helpers
-    # ---------------------------
     def execute(self, query: str, params=None, fetch=False, fetchone=False):
         conn = self.get_connection()
         try:
@@ -92,9 +82,6 @@ class Database:
         finally:
             conn.close()
 
-    # ---------------------------
-    # Schema init (optional)
-    # ---------------------------
     def init_db(self):
         """
         Create hotel tables if they do not exist (safe for fresh DB).
@@ -120,7 +107,6 @@ class Database:
                     """
                 )
 
-                # guest_address
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS guest_address (
@@ -138,7 +124,6 @@ class Database:
                     """
                 )
 
-                # guest_phone
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS guest_phone (
@@ -154,7 +139,6 @@ class Database:
                     """
                 )
 
-               
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS room (
@@ -173,7 +157,6 @@ class Database:
                     """
                 )
 
-                # employee
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS employee (
@@ -190,7 +173,6 @@ class Database:
                     """
                 )
 
-                # employee_phone
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS employee_phone (
@@ -206,7 +188,6 @@ class Database:
                     """
                 )
 
-                # reservation
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS reservation (
@@ -229,7 +210,6 @@ class Database:
                     """
                 )
 
-                # reservation_room
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS reservation_room (
@@ -247,7 +227,6 @@ class Database:
                     """
                 )
 
-                # employee_guest
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS employee_guest (
@@ -333,9 +312,6 @@ class Database:
         finally:
             conn.close()
 
-    # ---------------------------
-    # Auth
-    # ---------------------------
     def authenticate_employee(self, username: str, password: str):
         """
         Authenticate using employee.username/password.
@@ -361,7 +337,6 @@ class Database:
                 ok = self.verify_password(stored, password)
                 if not ok:
                     return None
-
              
                 if stored == password:
                     try:
@@ -388,9 +363,6 @@ class Database:
         finally:
             conn.close()
 
-    # ---------------------------
-    # Guests
-    # ---------------------------
     def get_all_guests(self, limit=200):
         conn = self.get_connection()
         try:
@@ -494,9 +466,6 @@ class Database:
     def delete_guest_address(self, address_id: int):
         self.execute("DELETE FROM guest_address WHERE address_id = %s", (address_id,))
 
-    # ---------------------------
-    # Rooms
-    # ---------------------------
     def get_all_rooms(self, limit=200):
         return self.execute(
             """
@@ -557,9 +526,6 @@ class Database:
             fetch=True,
         )
 
-    # ---------------------------
-    # Employees
-    # ---------------------------
     def get_all_employees(self, limit=200):
         return self.execute(
             """
@@ -632,8 +598,6 @@ class Database:
             (emp_id, guest_id),
         )
 
-    # ---------------------------
-    # Reservations
     from psycopg2 import Error
 
     def create_reservation(
@@ -657,7 +621,6 @@ class Database:
         if not room_ids:
             raise ValueError("At least one room_id is required")
 
-      
         status = (status or "active").strip().lower()
         if status not in ("active", "canceled", "finished"):
             status = "active"
@@ -861,9 +824,6 @@ class Database:
             fetch=True,
         )
 
-    # ---------------------------
-    # Stats / Dashboard
-    # ---------------------------
     def get_stats(self):
         conn = self.get_connection()
         try:
@@ -876,7 +836,6 @@ class Database:
 
                 cur.execute("SELECT COUNT(*) AS c FROM reservation WHERE status = 'active'")
                 active_reservations = cur.fetchone()["c"]
-=
                 cur.execute(
                     """
                     SELECT COUNT(DISTINCT rr.room_id) AS c
@@ -926,7 +885,5 @@ class Database:
             (emp_id,),
             fetchone=True,
         )
-
-
 
 db = Database()
