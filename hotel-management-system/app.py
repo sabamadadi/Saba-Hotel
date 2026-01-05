@@ -24,9 +24,6 @@ def inject_now():
     return {"now": datetime.now(), "current_date": datetime.now()}
 
 
-# -------------------------
-# Home / Auth
-# -------------------------
 @app.route("/")
 def home():
     if current_user.is_authenticated:
@@ -75,12 +72,6 @@ def logout():
     flash("با موفقیت از سیستم خارج شدید.", "info")
     return redirect(url_for("login"))
 
-
-# -------------------------
-# Dashboard + Stats
-# -------------------------
-
-
 @app.route("/api/stats")
 @login_required
 def api_stats():
@@ -97,10 +88,6 @@ def api_stats():
         }
     )
 
-
-# -------------------------
-# Guests
-# -------------------------
 @app.route("/guests")
 @login_required
 def guests():
@@ -164,11 +151,7 @@ def delete_guest(guest_id):
         flash(f"خطا در حذف مهمان: {str(e)}", "danger")
 
     return redirect(url_for("guests"))
-
-
-# -------------------------
-# Rooms
-# -------------------------
+    
 @app.route("/rooms")
 @login_required
 def rooms():
@@ -268,9 +251,7 @@ def delete_room(room_id):
     return redirect(url_for("rooms"))
 
 
-# -------------------------
-# Reservations
-# -------------------------
+
 @app.route("/reservations")
 @login_required
 def reservations():
@@ -398,10 +379,6 @@ def finish_reservation(res_id):
         flash(f"خطا در پایان رزرو: {str(e)}", "danger")
     return redirect(url_for("reservations"))
 
-
-# -------------------------
-# Change Password (Employee)
-# -------------------------
 @app.route("/change-password", methods=["GET", "POST"])
 @login_required
 def change_password():
@@ -439,10 +416,6 @@ def change_password():
 
     return render_template("change_password.html")
 
-
-# -------------------------
-# Profile
-# -------------------------
 @app.route("/profile")
 @login_required
 def profile():
@@ -450,10 +423,6 @@ def profile():
     employee = db.get_employee_by_id(emp_id)
     return render_template("profile.html", employee=employee)
 
-
-# -------------------------
-# Errors
-# -------------------------
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
@@ -476,4 +445,5 @@ def page_500():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
+
     app.run(host="0.0.0.0", port=port, debug=True)
