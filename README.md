@@ -7,6 +7,19 @@
 این پروژه یک **سیستم مدیریت هتل** مدرن و ساده است که با **Flask** پیاده‌سازی شده و از **PostgreSQL (Neon)** استفاده می‌کند.
 در کنار پنل وب، یک **بات تلگرام** هم برای مشاهده وضعیت سریع هتل طراحی شده است 📲✨
 
+
+### Entity–Relationship (ER) Diagram
+
+<p align="center">
+  Conceptual ER diagram of the database schema, created using 
+  <a href="https://dbdiagram.io" target="_blank">dbdiagram.io</a>.
+</p>
+
+<p align="center">
+  <img src="ER_Diagram.png" alt="ER Diagram" width="700">
+</p>
+
+
 ---
 
 ## ✨ امکانات پروژه
