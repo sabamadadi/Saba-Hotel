@@ -1,0 +1,86 @@
+{
+ "cells": [
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE guest (\r\n    guest_id    SERIAL PRIMARY KEY,\r\n    name        VARCHAR(50) NOT NULL,\r\n    family      VARCHAR(50) NOT NULL,\r\n    national_id VARCHAR(20),\r\n    passport    VARCHAR(20),\r\n    birthdate   DATE NOT NULL,\r\n    email       VARCHAR(100) UNIQUE NOT NULL,\r\n    CONSTRAINT chk_guest_id\r\n        CHECK (national_id IS NOT NULL OR passport IS NOT NULL)\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE guest_address (\r\n    address_id SERIAL PRIMARY KEY,\r\n    guest_id   INT NOT NULL,\r\n    province   VARCHAR(50) NOT NULL,\r\n    city       VARCHAR(50) NOT NULL,\r\n    street     VARCHAR(100) NOT NULL,\r\n    plaque     VARCHAR(20) NOT NULL,\r\n    CONSTRAINT fk_guest_address\r\n        FOREIGN KEY (guest_id)\r\n        REFERENCES guest(guest_id)\r\n        ON DELETE CASCADE\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE guest_phone (\r\n    phone_id SERIAL PRIMARY KEY,\r\n    guest_id INT NOT NULL,\r\n    phone    VARCHAR(20) NOT NULL,\r\n    CONSTRAINT uq_guest_phone UNIQUE (guest_id, phone),\r\n    CONSTRAINT fk_guest_phone\r\n        FOREIGN KEY (guest_id)\r\n        REFERENCES guest(guest_id)\r\n        ON DELETE CASCADE\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE room (\r\n    room_id  INT PRIMARY KEY,\r\n    type     VARCHAR(30) NOT NULL,\r\n    capacity INT NOT NULL CHECK (capacity > 0),\r\n    price    NUMERIC(10,2) NOT NULL CHECK (price >= 0),\r\n    features VARCHAR(255),\r\n    floor    INT NOT NULL,\r\n    bed_type VARCHAR(30) NOT NULL,\r\n    smoking  BOOLEAN NOT NULL DEFAULT FALSE,\r\n    status   VARCHAR(20) NOT NULL,\r\n    CONSTRAINT chk_room_status\r\n        CHECK (status IN ('available','reserved','occupied','cleaning'))\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE employee (\r\n    emp_id       SERIAL PRIMARY KEY,\r\n    name         VARCHAR(50) NOT NULL,\r\n    family       VARCHAR(50) NOT NULL,\r\n    national_id  VARCHAR(20) UNIQUE NOT NULL,\r\n    birthdate    DATE NOT NULL,\r\n    position     VARCHAR(50) NOT NULL,\r\n    username     VARCHAR(50) UNIQUE NOT NULL,\r\n    password     VARCHAR(255) NOT NULL,\r\n    access_level INT NOT NULL CHECK (access_level BETWEEN 1 AND 5)\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE employee_phone (\r\n    phone_id SERIAL PRIMARY KEY,\r\n    emp_id   INT NOT NULL,\r\n    phone    VARCHAR(20) NOT NULL,\r\n    CONSTRAINT uq_employee_phone UNIQUE (emp_id, phone),\r\n    CONSTRAINT fk_employee_phone\r\n        FOREIGN KEY (emp_id)\r\n        REFERENCES employee(emp_id)\r\n        ON DELETE CASCADE\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE reservation (\r\n    res_id       SERIAL PRIMARY KEY,\r\n    guest_id     INT NOT NULL,\r\n    emp_id       INT NOT NULL,\r\n    check_in     DATE NOT NULL,\r\n    check_out    DATE NOT NULL,\r\n    booking_date TIMESTAMP NOT NULL DEFAULT NOW(),\r\n    num_people   INT NOT NULL CHECK (num_people > 0),\r\n    status       VARCHAR(20) NOT NULL,\r\n    total_cost   NUMERIC(10,2) NOT NULL CHECK (total_cost >= 0),\r\n    payment      NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (payment >= 0),\r\n    discount     NUMERIC(5,2) NOT NULL DEFAULT 0 CHECK (discount >= 0),\r\n    CONSTRAINT chk_reservation_dates\r\n        CHECK (check_out > check_in),\r\n    CONSTRAINT chk_res_status\r\n        CHECK (status IN ('active','canceled','finished')),\r\n    CONSTRAINT fk_res_guest\r\n        FOREIGN KEY (guest_id)\r\n        REFERENCES guest(guest_id),\r\n    CONSTRAINT fk_res_emp\r\n        FOREIGN KEY (emp_id)\r\n        REFERENCES employee(emp_id)\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE reservation_room (\r\n    res_id  INT NOT NULL,\r\n    room_id INT NOT NULL,\r\n    PRIMARY KEY (res_id, room_id),\r\n    CONSTRAINT fk_rr_res\r\n        FOREIGN KEY (res_id)\r\n        REFERENCES reservation(res_id)\r\n        ON DELETE CASCADE,\r\n    CONSTRAINT fk_rr_room\r\n        FOREIGN KEY (room_id)\r\n        REFERENCES room(room_id)\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  },
+  {
+   "kind": 2,
+   "language": "sql",
+   "value": "CREATE TABLE employee_guest (\r\n    emp_id   INT NOT NULL,\r\n    guest_id INT NOT NULL,\r\n    PRIMARY KEY (emp_id, guest_id),\r\n    CONSTRAINT fk_eg_emp\r\n        FOREIGN KEY (emp_id)\r\n        REFERENCES employee(emp_id)\r\n        ON DELETE CASCADE,\r\n    CONSTRAINT fk_eg_guest\r\n        FOREIGN KEY (guest_id)\r\n        REFERENCES guest(guest_id)\r\n        ON DELETE CASCADE\r\n);",
+   "metadata": {
+    "connectionName": "Postgres"
+   },
+   "outputs": []
+  }
+ ],
+ "metadata": {}
+}
